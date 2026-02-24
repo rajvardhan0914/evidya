@@ -1,0 +1,114 @@
+﻿
+> evidya@0.1.0 lint
+> eslint
+
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\ai\page.tsx
+   43:16   warning  'e' is defined but never used             @typescript-eslint/no-unused-vars
+   93:21   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:97   error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  175:105  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\ai\chat\route.ts
+  78:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\ai\coding-feedback\route.ts
+  67:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\ai\idea-guidance\route.ts
+  58:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\ai\idea-summary\route.ts
+  61:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\ai\weekly-reflection\route.ts
+  16:28  warning  'req' is defined but never used           @typescript-eslint/no-unused-vars
+  79:19  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\auth\signup\route.ts
+  22:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\user\activity\route.ts
+  1:10  warning  'NextRequest' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\api\user\stats\route.ts
+  1:10  warning  'NextRequest' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\challenges\page.tsx
+  31:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\challenges\page.tsx:31:5
+  29 |   useEffect(() => {
+  30 |     // Mock data - replace with actual API call
+> 31 |     setHackathons([
+     |     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  32 |       {
+  33 |         id: '1',
+  34 |         title: 'EVIDYA Innovation Hackathon 2024',  react-hooks/set-state-in-effect
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\dashboard\page.tsx
+  110:33  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\explore\page.tsx
+  39:10  warning  'filter' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  39:18  warning  'setFilter' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\idea\[id]\page.tsx
+  87:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\innovation\page.tsx
+  71:39  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\innovation\submit\page.tsx
+  46:14  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\practice\page.tsx
+  96:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\app\profile\page.tsx
+   19:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   75:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   81:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   95:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\ai\aiService.ts
+   89:21  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:30  warning  'systemPrompt' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\ai\modules.ts
+   43:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  103:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  159:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  261:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\ai\orchestrator.ts
+   12:42  warning  'evaluateActivity' is defined but never used             @typescript-eslint/no-unused-vars
+   19:35  error    Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+   26:13  error    Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  182:9   error    'systemPrompt' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\ai\ruleEngine.ts
+  21:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\auth.ts
+   5:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  43:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  52:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  63:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\raj17\OneDrive\Desktop\startup\evidya\src\lib\prisma.ts
+   5:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 45 problems (35 errors, 10 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

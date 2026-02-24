@@ -1,0 +1,263 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  STUDENT
+  COMPANY
+  ADMIN
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  role           Role      @default(STUDENT)
+  isVerified     Boolean   @default(false)
+  companyDetails String?   @db.LongText
+  
+  institution    String?   // Mapped from 'institution' request
+  interestDomain String?   // Mapped from 'interest_domain' request
+  
+  // Auth fields (keeping for compatibility)
+  hashedPassword String?
+  emailVerified  DateTime?
+  image          String?   @db.LongText
+  coverImage     String?   @db.LongText
+  bio            String?   @db.Text
+  location       String?
+  skills         String?
+  shortGoal      String?
+  
+  accounts       Account[]
+  sessions       Session[]
+  
+  // Relationships
+  ideas          Idea[]
+  submissions    Submission[]
+  activityLogs   ActivityLog[]
+  aiInsights     AiInsight[]
+  challenges     Challenge[]
+  chats          Chat[]
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Challenge {
+  id          String   @id @default(cuid())
+  userId      String
+  companyName String
+  title       String
+  description String   @db.LongText
+  reward      String?
+  type        String   @default("OPEN")
+  status      String   @default("ACTIVE")
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Idea {
+  id               String   @id @default(cuid())
+  userId           String
+  title            String
+  problemStatement String   @db.LongText
+  approach         String   @db.LongText
+  files            String?  @db.LongText
+  
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model CodingChallenge {
+  id            String       @id @default(cuid())
+  title         String       @unique
+  description   String
+  difficulty    String
+  inputExample  String?
+  outputExample String?
+  starterCode   String?      @db.LongText
+  submissions   Submission[]
+  createdAt     DateTime     @default(now())
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  userId      String
+  challengeId String
+  code        String   @db.LongText
+  explanation String?  @db.LongText
+  language    String
+  timeTaken   Int?
+  
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   CodingChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+}
+
+model AptitudeQuestion {
+  id            String   @id @default(cuid())
+  type          String   // "Logical Reasoning", "Quantitative"
+  question      String   @db.LongText
+  options       String   @db.LongText // JSON array of strings
+  correctAnswer String
+  explanation   String   @db.LongText
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String
+  actionType  String   // Mapped from 'action_type'
+  referenceId String?  // Mapped from 'reference_id'
+  metadata    String?  @db.LongText
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId, createdAt])
+  @@index([actionType])
+}
+
+model AiInsight {
+  id          String   @id @default(cuid())
+  userId      String
+  relatedType String   // 'idea', 'coding', 'weekly'
+  relatedId   String?
+  insightText String   @db.LongText
+  cached      Boolean  @default(false)
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId, relatedType])
+  @@index([relatedType, relatedId])
+}
+
+// Comprehensive Syllabus Models
+model Course {
+  id          String   @id @default(cuid())
+  title       String   // "CBSE 10th Mathematics"
+  description String   @db.Text
+  level       String   // "10th", "Intermediate", "B.Tech"
+  stream      String?  // "MPC", "BiPC", "CSE", null for 10th
+  category    String   // "Mathematics", "Physics", etc.
+  status      String   // "Free", "Premium", "Coming Soon"
+  order       Int      // Display order
+  
+  topics      Topic[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("courses")
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  title       String   // "Real Numbers", "Thermodynamics"
+  description String?  @db.Text
+  content     String?  @db.LongText // Detailed learning content
+  order       Int
+  isPremium   Boolean  @default(false)
+  
+  subtopics   Subtopic[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("topics")
+}
+
+model Subtopic {
+  id          String   @id @default(cuid())
+  topicId     String
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  title       String   // "Fundamental Theorem of Arithmetic"
+  content     String   @db.LongText
+  order       Int
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("subtopics")
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+  
+  @@index([userId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  chatId    String
+  role      String   // 'user' or 'assistant'
+  content   String   @db.LongText
+  createdAt DateTime @default(now())
+  
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  
+  @@index([chatId])
+}
